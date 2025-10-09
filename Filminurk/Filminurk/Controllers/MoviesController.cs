@@ -25,5 +25,8 @@ namespace Filminurk.Controllers
             });
             return View(result);
         }
+
+        [HttpGet]
+        public IActionResult Create() { return View(); }
     }
 }

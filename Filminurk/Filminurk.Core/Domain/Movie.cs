@@ -24,5 +24,9 @@ namespace Filminurk.Core.Domain
         public string? CountryFilmedIn { get; set; }
         public string? Genre { get; set; }
 
+        /* */
+        public DateTime? EntryCreatedAt { get; set; }
+        public DateTime? EntryModifiedAt { get; set; }
+
     }
 }
