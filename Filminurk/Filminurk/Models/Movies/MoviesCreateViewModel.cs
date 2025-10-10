@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-
-namespace Filminurk.Core.Domain
+﻿namespace Filminurk.Models.Movies
 {
-
-    public class Movie
+    public class MoviesCreateViewModel
     {
         public Guid ID { get; set; }
         public string Title { get; set; }
@@ -24,5 +16,8 @@ namespace Filminurk.Core.Domain
         public string? CountryFilmedIn { get; set; }
         public string? Genre { get; set; }
 
+        /* */
+        public DateTime? EntryCreatedAt { get; set; }
+        public DateTime? EntryModifiedAt { get; set; }
     }
 }
