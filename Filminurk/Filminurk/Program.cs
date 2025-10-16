@@ -1,3 +1,4 @@
+using Filminurk.ApplicationServices.Services;
 using Filminurk.Core.ServiceInterface;
 using Filminurk.Data;
 using Microsoft.EntityFrameworkCore;

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Filminurk.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class _1 : Migration
+    public partial class a : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,10 +21,12 @@ namespace Filminurk.Data.Migrations
                     FirstPublished = table.Column<DateOnly>(type: "date", nullable: false),
                     Director = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Actors = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CurrentRating = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    CurrentRating = table.Column<double>(type: "float", nullable: true),
                     TimesShown = table.Column<int>(type: "int", nullable: true),
                     CountryFilmedIn = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Genre = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Genre = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EntryCreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EntryModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {

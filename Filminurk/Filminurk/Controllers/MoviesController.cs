@@ -3,6 +3,7 @@ using Filminurk.Core.ServiceInterface;
 using Filminurk.Data;
 using Filminurk.Models.Movies;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Filminurk.Controllers
 {
@@ -38,9 +39,11 @@ namespace Filminurk.Controllers
             return View("Create", result);
         }
 
-        [HttpPost]
+        [HttpPost, ActionName("Create")]
         public async Task<IActionResult> Create(MoviesCreateViewModel vm)
         {
+            if (vm == null) { return NotFound(); } 
+
             var dto = new MoviesDTO()
             {
                 ID = vm.ID,
@@ -59,6 +62,38 @@ namespace Filminurk.Controllers
 
             var result = await _movieServices.Create(dto);
             if (result == null) { return RedirectToAction(nameof(Index)); }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var movie = await _movieServices.DetailsAsync(id);
+
+            if (movie == null) { return NotFound(); }
+
+            var vm = new MoviesDeleteViewModel();
+            vm.ID = movie.ID;
+            vm.Title = movie.Title;
+            vm.Description = movie.Description;
+            vm.Genre = movie.Genre;
+            vm.FirstPublished = movie.FirstPublished;
+            vm.CountryFilmedIn = movie.CountryFilmedIn;
+            vm.EntryCreatedAt = movie.EntryCreatedAt;
+            vm.EntryModifiedAt = movie.EntryModifiedAt;
+            vm.CurrentRating = movie.CurrentRating;
+            vm.Director = movie.Director;
+            vm.Actors = movie.Actors;
+            vm.TimesShown = movie.TimesShown;
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmation(Guid id)
+        {
+            var movie = await _movieServices.Delete(id);
+            if (movie == null) { return NotFound(); }
             return RedirectToAction(nameof(Index));
         }
     }
