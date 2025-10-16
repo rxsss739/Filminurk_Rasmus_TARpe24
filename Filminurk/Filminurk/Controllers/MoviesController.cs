@@ -35,12 +35,12 @@ namespace Filminurk.Controllers
         [HttpGet]
         public IActionResult Create() 
         {
-            MoviesCreateViewModel result = new();
+            MoviesCreateUpdateViewModel result = new();
             return View("Create", result);
         }
 
         [HttpPost, ActionName("Create")]
-        public async Task<IActionResult> Create(MoviesCreateViewModel vm)
+        public async Task<IActionResult> Create(MoviesCreateUpdateViewModel vm)
         {
             if (vm == null) { return NotFound(); } 
 
@@ -63,6 +63,30 @@ namespace Filminurk.Controllers
             var result = await _movieServices.Create(dto);
             if (result == null) { return RedirectToAction(nameof(Index)); }
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid id)
+        {
+            var movie = await _movieServices.DetailsAsync(id);
+
+            if (movie == null) { return NotFound(); }
+
+            var vm = new MoviesCreateUpdateViewModel();
+            vm.ID = movie.ID;
+            vm.Title = movie.Title;
+            vm.Description = movie.Description;
+            vm.Genre = movie.Genre;
+            vm.FirstPublished = movie.FirstPublished;
+            vm.CountryFilmedIn = movie.CountryFilmedIn;
+            vm.EntryCreatedAt = movie.EntryCreatedAt;
+            vm.EntryModifiedAt = movie.EntryModifiedAt;
+            vm.CurrentRating = movie.CurrentRating;
+            vm.Director = movie.Director;
+            vm.Actors = movie.Actors;
+            vm.TimesShown = movie.TimesShown;
+
+            return View("CreateUpdate", vm);
         }
 
         [HttpGet]
