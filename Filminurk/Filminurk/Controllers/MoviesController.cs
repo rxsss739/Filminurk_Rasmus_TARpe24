@@ -144,5 +144,29 @@ namespace Filminurk.Controllers
             if (movie == null) { return NotFound(); }
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var movie = await _movieServices.DetailsAsync(id);
+
+            if (movie == null) { return NotFound(); }
+
+            var vm = new MoviesDetailsViewModel();
+            vm.ID = movie.ID;
+            vm.Title = movie.Title;
+            vm.Description = movie.Description;
+            vm.Genre = movie.Genre;
+            vm.FirstPublished = movie.FirstPublished;
+            vm.CountryFilmedIn = movie.CountryFilmedIn;
+            vm.EntryCreatedAt = movie.EntryCreatedAt;
+            vm.EntryModifiedAt = movie.EntryModifiedAt;
+            vm.CurrentRating = movie.CurrentRating;
+            vm.Director = movie.Director;
+            vm.Actors = movie.Actors;
+            vm.TimesShown = movie.TimesShown;
+
+            return View(vm);
+        }
     }
 }
