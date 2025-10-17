@@ -36,7 +36,7 @@ namespace Filminurk.Controllers
         public IActionResult Create() 
         {
             MoviesCreateUpdateViewModel result = new();
-            return View("Create", result);
+            return View("CreateUpdate", result);
         }
 
         [HttpPost, ActionName("Create")]
@@ -87,6 +87,30 @@ namespace Filminurk.Controllers
             vm.TimesShown = movie.TimesShown;
 
             return View("CreateUpdate", vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(MoviesCreateUpdateViewModel vm) 
+        {
+            var dto = new MoviesDTO()
+            {
+                ID = vm.ID,
+                Title = vm.Title,
+                Description = vm.Description,
+                FirstPublished = vm.FirstPublished,
+                CurrentRating = vm.CurrentRating,
+                Director = vm.Director,
+                Actors = vm.Actors,
+                TimesShown = vm.TimesShown,
+                CountryFilmedIn = vm.CountryFilmedIn,
+                Genre = vm.Genre,
+                EntryCreatedAt = vm.EntryCreatedAt,
+                EntryModifiedAt = vm.EntryModifiedAt,
+            };
+
+            var result = await _movieServices.Update(dto);
+            if (result == null) { return NotFound(); };
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]

@@ -5,11 +5,11 @@
 
 @if (Model.ID.HasValue)
 {
-	<h1>Lisa film</h1>
+	<h1>Muuda film</h1>
 }
 else
 {
-	<h1>Muuda film</h1>
+	<h1>Lisa film</h1>
 }
 
 <div>
@@ -74,7 +74,15 @@ else
 			</div>
 		</div>
 
-		<input asp-action="Create" asp-controller="Movies" type="submit" class="btn btn-primary" value="Create"/>
+		@if (Model.ID.HasValue)
+		{
+			<input asp-action="Update" asp-controller="Movies" type="submit" class="btn btn-primary" value="Update" />
+		}
+		else
+		{
+			<input asp-action="Create" asp-controller="Movies" type="submit" class="btn btn-primary" value="Create" />
+		}
+		<a asp-action="Index" asp-controller="Movies" class="btn btn-success">Back</a>
 
 	</form>
 </div>
