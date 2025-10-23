@@ -11,11 +11,13 @@ namespace Filminurk.Controllers
     {
         private readonly FilminurkTARpe24Context _context; 
         private readonly IMovieServices _movieServices;
+        private readonly IFilesServices _filesServices;
 
-        public MoviesController(FilminurkTARpe24Context context, IMovieServices movieServices) 
+        public MoviesController(FilminurkTARpe24Context context, IMovieServices movieServices, IFilesServices filesServices) 
         {
             _context = context;
             _movieServices = movieServices;
+            _filesServices = filesServices;
         }
 
         public IActionResult Index()
@@ -58,6 +60,15 @@ namespace Filminurk.Controllers
                 Genre = vm.Genre,
                 EntryCreatedAt = vm.EntryCreatedAt,
                 EntryModifiedAt = vm.EntryModifiedAt,
+                Files = vm.Files,
+                FilesToApiDTOs = vm.Images
+                .Select(x => new FileToApiDTO
+                {
+                    ImageID = x.ImageID,
+                    FilePath = x.FilePath,
+                    MovieID = x.MovieID,
+                    IsPoster = x.IsPoster
+                }).ToArray()
             };
 
             var result = await _movieServices.Create(dto);
@@ -72,6 +83,14 @@ namespace Filminurk.Controllers
 
             if (movie == null) { return NotFound(); }
 
+            var images = await _context.FilesToApi
+                .Where(x => x.MovieID == id)
+                .Select(y => new ImageViewModel
+                {
+                    FilePath = y.ExistingFilePath,
+                    ImageID = id
+                }).ToArrayAsync();
+
             var vm = new MoviesCreateUpdateViewModel();
             vm.ID = movie.ID;
             vm.Title = movie.Title;
@@ -85,6 +104,7 @@ namespace Filminurk.Controllers
             vm.Director = movie.Director;
             vm.Actors = movie.Actors;
             vm.TimesShown = movie.TimesShown;
+            vm.Images.AddRange(images);
 
             return View("CreateUpdate", vm);
         }
@@ -106,6 +126,14 @@ namespace Filminurk.Controllers
                 Genre = vm.Genre,
                 EntryCreatedAt = vm.EntryCreatedAt,
                 EntryModifiedAt = vm.EntryModifiedAt,
+                Files = vm.Files,
+                FilesToApiDTOs = vm.Images
+                .Select(x => new FileToApiDTO
+                {
+                    MovieID = x.MovieID,
+                    FilePath = x.FilePath,
+                    ImageID = x.ImageID
+                }).ToArray()
             };
 
             var result = await _movieServices.Update(dto);
@@ -120,6 +148,14 @@ namespace Filminurk.Controllers
 
             if (movie == null) { return NotFound(); }
 
+            var images = await _context.FilesToApi
+                .Where(x => x.MovieID == id)
+                .Select(y => new ImageViewModel
+                {
+                    FilePath = y.ExistingFilePath,
+                    ImageID = y.ImageID,
+                }).ToArrayAsync();
+
             var vm = new MoviesDeleteViewModel();
             vm.ID = movie.ID;
             vm.Title = movie.Title;
@@ -133,6 +169,7 @@ namespace Filminurk.Controllers
             vm.Director = movie.Director;
             vm.Actors = movie.Actors;
             vm.TimesShown = movie.TimesShown;
+            vm.Images.AddRange(images);
 
             return View(vm);
         }

@@ -10,6 +10,8 @@
         public List<string>? Actors { get; set; }
         public double? CurrentRating { get; set; }
         //public List<UserComment>? Reviews { get; set; }
+        /* Kaasasolevate piltide andmeomadused */
+        public List<ImageViewModel> Images { get; set; } = new List<ImageViewModel>();
 
         /* 3 andmetüüpi */
         public int? TimesShown { get; set; }

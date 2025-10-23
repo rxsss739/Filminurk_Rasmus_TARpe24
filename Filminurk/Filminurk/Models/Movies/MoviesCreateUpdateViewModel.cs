@@ -11,6 +11,10 @@
         public double? CurrentRating { get; set; }
         //public List<UserComment>? Reviews { get; set; }
 
+        /* Kaasasolevate piltide andmeomadused */
+        public List<IFormFile> Files { get; set; }
+        public List<ImageViewModel> Images { get; set; } = new List<ImageViewModel>();
+
         /* 3 andmetüüpi */
         public int? TimesShown { get; set; }
         public string? CountryFilmedIn { get; set; }
