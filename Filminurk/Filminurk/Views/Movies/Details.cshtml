@@ -1,4 +1,7 @@
-﻿@model Filminurk.Models.Movies.MoviesDetailsViewModel
+﻿@using Filminurk.Core.Domain
+@using Filminurk.Models.Movies
+
+@model Filminurk.Models.Movies.MoviesDetailsViewModel
 
 <h1>Filmi info</h1>
 
@@ -76,6 +79,13 @@
 			<label asp-for="EntryModifiedAt" class="col-sm-2 col-form-label"></label>
 			@Html.DisplayFor(Model => Model.EntryModifiedAt)
 		</div>
+	</dl>
+
+	<dl>
+		@foreach (var images in Model.Images)
+		{
+			<partial name="_Images" model="images" />
+		}
 	</dl>
 
 	<hr />

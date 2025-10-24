@@ -4,6 +4,7 @@ using Filminurk.Data;
 using Filminurk.Models.Movies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 namespace Filminurk.Controllers
 {
@@ -46,33 +47,42 @@ namespace Filminurk.Controllers
         {
             if (vm == null) { return NotFound(); } 
 
-            var dto = new MoviesDTO()
+            if (ModelState.IsValid)
             {
-                ID = vm.ID,
-                Title = vm.Title,
-                Description = vm.Description,
-                FirstPublished = vm.FirstPublished,
-                CurrentRating = vm.CurrentRating,
-                Director = vm.Director,
-                Actors = vm.Actors,
-                TimesShown = vm.TimesShown,
-                CountryFilmedIn = vm.CountryFilmedIn,
-                Genre = vm.Genre,
-                EntryCreatedAt = vm.EntryCreatedAt,
-                EntryModifiedAt = vm.EntryModifiedAt,
-                Files = vm.Files,
-                FilesToApiDTOs = vm.Images
-                .Select(x => new FileToApiDTO
+                var dto = new MoviesDTO()
                 {
-                    ImageID = x.ImageID,
-                    FilePath = x.FilePath,
-                    MovieID = x.MovieID,
-                    IsPoster = x.IsPoster
-                }).ToArray()
-            };
+                    ID = vm.ID,
+                    Title = vm.Title,
+                    Description = vm.Description,
+                    FirstPublished = vm.FirstPublished,
+                    CurrentRating = vm.CurrentRating,
+                    Director = vm.Director,
+                    Actors = vm.Actors,
+                    TimesShown = vm.TimesShown,
+                    CountryFilmedIn = vm.CountryFilmedIn,
+                    Genre = vm.Genre,
+                    EntryCreatedAt = vm.EntryCreatedAt,
+                    EntryModifiedAt = vm.EntryModifiedAt,
+                    Files = vm.Files,
+                    FilesToApiDTOs = vm.Images
+                    .Select(x => new FileToApiDTO
+                    {
+                        ImageID = x.ImageID,
+                        FilePath = x.FilePath,
+                        MovieID = x.MovieID,
+                        IsPoster = x.IsPoster
+                    }).ToArray()
+                };
 
-            var result = await _movieServices.Create(dto);
-            if (result == null) { return RedirectToAction(nameof(Index)); }
+                var result = await _movieServices.Create(dto);
+                if (result == null) 
+                {
+                    return NotFound(); 
+                }   
+
+                return RedirectToAction(nameof(Index));
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -189,6 +199,8 @@ namespace Filminurk.Controllers
 
             if (movie == null) { return NotFound(); }
 
+            ImageViewModel[] images = await FileFromDatabase(id);
+
             var vm = new MoviesDetailsViewModel();
             vm.ID = movie.ID;
             vm.Title = movie.Title;
@@ -202,8 +214,22 @@ namespace Filminurk.Controllers
             vm.Director = movie.Director;
             vm.Actors = movie.Actors;
             vm.TimesShown = movie.TimesShown;
+            vm.Images.AddRange(images);
 
             return View(vm);
+        }
+
+        private async Task<ImageViewModel[]> FileFromDatabase(Guid id)
+        {
+            return await _context.FilesToApi
+                .Where(x => x.MovieID == id)
+                .Select(y => new ImageViewModel
+                {
+                    ImageID = y.ImageID,
+                    MovieID = y.MovieID,
+                    IsPoster = y.IsPoster,
+                    FilePath = y.ExistingFilePath
+                }).ToArrayAsync();
         }
     }
 }
