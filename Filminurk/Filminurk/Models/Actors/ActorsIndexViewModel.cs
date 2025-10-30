@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Filminurk.Core.Domain;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Filminurk.Core.Domain;
 
-namespace Filminurk.Core.Dto
+namespace Filminurk.Models.Actors
 {
-    public class ActorDTO
+    public class ActorsIndexViewModel
     {
+        [Key]
         public Guid ActorID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
