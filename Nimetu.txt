@@ -1,0 +1,44 @@
+
+Added actor in domain, made gender enum for specifying gender in actor
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/c370533dc31a3f35bed71cae6a57a927accbaae5
+
+Added 3 datatypes in actor
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/d4d586a117d294f74df92a0932c397cf6491933d
+
+Made ActorDTO, added datatypes
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/dca19e03f7b0df225e35f9bbf2e0d4437dee1671
+
+Made ActorsController and added dbcontext to it. Registered actors table in dbcontext
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/c292ad70136a95576ca5f5c563b769d7c422fdc0
+
+Made ActorsIndexViewModel and added datatypes. Made Index method in ActorsController for viewing all actors.
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/be6d049df7f2b5b223ac38536ad911c102aa5c1c
+
+Added actors index button in shared layout. Made index view for actors. Migration because added actor in domain
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/29c91e70b50ab115e2d1de8490ea3e09fd48c85c
+
+Made create view for actors. Addd ActorsCreateViewModel. Made Interface IActorServices and added Services ActorServices
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/fd92d05cab5472746e2e6eef913469a24f490965
+
+Fixed datatypes in ActorDTO and ActorsIndexViewModel
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/8c27fb9f0e9f282e1c56f69c2735d0d7cb1a3744
+
+Made PortraitID and MoviesActedFor optional for later use, added IActorServices interface in program.cs, added get and post method for create for actors
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/22815407a27d26a73b5eb9c1394b0bcb54a17904
+
+Made ActorsDeleteViewModel, added get method for Delete view, made delete method in services and referenced it in interface
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/4ac78c18a08a6cbc383475bc668724ad2114dfbb
+
+Made empty delete view for actors, added EntryModifiedAt and EntryCreatedAt datatypes for database.
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/50e329aa21b5e1b16a31203bd0b93256fd31d0a1
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/2b7120fe5db22c6dde4dbad9d7207c0d619ffdce
+
+Added delete view, confirmdelete post method for actors. Migration
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/2c2335daee50f6eee7de11f0e171e9295e6571d1
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/84f1cab1974b5575b3c9fd77b816cbb18b610261
+
+Added ActorsDetailsViewModel for viewing actors details. Added Details view for actors. Added get method for Details for actors
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/6125f910f051b552fecb0313fb71a76dafda09de
+
+Added update view model for actors, made actorsupdateviewmodel
+https://github.com/rxsss739/Filminurk_Rasmus_TARpe24/commit/6dde7a7ff5aa712d0e724b6690f849a6af0166ef
