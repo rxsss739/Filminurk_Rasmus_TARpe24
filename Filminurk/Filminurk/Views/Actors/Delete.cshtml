@@ -1,5 +1,55 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Filminurk.Models.Actors.ActorsDeleteViewModel
+
+<h1>Kustuta näitleja</h1>
+
+<div>
+	<h4>Näitleja</h4>
+	<hr />
+	<dl class="row">
+		<div class="form-group-row">
+			<label asp-for="ActorID" class="col-sm-2 col-form-label"></label>
+			@Html.DisplayFor(Model => Model.ActorID)
+		</div>
+	</dl>
+	<dl class="row">
+		<div class="form-group-row">
+			<label asp-for="FirstName" class="col-sm-2 col-form-label"></label>
+			@Html.DisplayFor(Model => Model.FirstName)
+		</div>
+	</dl>
+	<dl class="row">
+		<div class="form-group-row">
+			<label asp-for="LastName" class="col-sm-2 col-form-label"></label>
+			@Html.DisplayFor(Model => Model.LastName)
+		</div>
+	</dl>
+	<dl class="row">
+		<div class="form-group-row">
+			<label asp-for="NickName" class="col-sm-2 col-form-label"></label>
+			@Html.DisplayFor(Model => Model.NickName)
+		</div>
+	</dl>
+	<dl class="row">
+		<div class="form-group-row">
+			<label asp-for="ActorRating" class="col-sm-2 col-form-label"></label>
+			@Html.DisplayFor(Model => Model.ActorRating)
+		</div>
+	</dl>
+	<dl class="row">
+		<div class="form-group-row">
+			<label asp-for="MovieKnownFor" class="col-sm-2 col-form-label"></label>
+			@Html.DisplayFor(Model => Model.MovieKnownFor)
+		</div>
+	</dl>
+	<dl class="row">
+		<div class="form-group-row">
+			<label asp-for="Gender" class="col-sm-2 col-form-label"></label>
+			@Html.DisplayFor(Model => Model.Gender)
+		</div>
+	</dl>
+	<form method="post" >
+		
+		<input type="submit" asp-action="ConfirmDelete" asp-controller="Actors" asp-route-id="@Model.ActorID" value="Remove" class="btn btn-danger" />
+		<a asp-action="Index" asp-controller="Actors" class="btn btn-success">Return to list</a>
+	</form>
+</div>
