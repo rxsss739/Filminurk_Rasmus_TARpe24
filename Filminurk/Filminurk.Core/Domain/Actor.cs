@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace Filminurk.Core.Domain
 {
+    public enum Genders
+    {
+        Male,
+        Female
+    }
+
     public class Actor
     {
         [Key]
@@ -19,6 +25,6 @@ namespace Filminurk.Core.Domain
         /* 3 enda mõeldud andmetüüpi */
         public decimal ActorRating { get; set; }
         public string MovieKnownFor { get; set; }
-        public Gender Gender { get; set; }
+        public Genders Gender { get; set; }
     }
 }
