@@ -95,5 +95,24 @@ namespace Filminurk.Controllers
             if (actor == null) { return NotFound(); }
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var actor = await _context.Actors.FirstOrDefaultAsync(x => x.ActorID == id);
+
+            var vm = new ActorsDetailsViewModel();
+            vm.ActorID = actor.ActorID;
+            vm.FirstName = actor.FirstName;
+            vm.LastName = actor.LastName;
+            vm.NickName = actor.NickName;
+            vm.MoviesActedFor = actor.MoviesActedFor;
+            vm.PortraitID = actor.PortraitID;
+            vm.Gender = actor.Gender;
+            vm.ActorRating = actor.ActorRating;
+            vm.MovieKnownFor = actor.MovieKnownFor;
+
+            return View(vm);
+        }
     }
 }
