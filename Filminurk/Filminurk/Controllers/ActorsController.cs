@@ -60,6 +60,8 @@ namespace Filminurk.Controllers
                 ActorRating = vm.ActorRating,
                 MoviesActedFor = vm.MoviesActedFor,
                 PortraitID = vm.PortraitID,
+                EntryCreatedAt = vm.EntryCreatedAt,
+                EntryModifiedAt = vm.EntryModifiedAt,
             };
 
             var result = await _actorServices.Create(dto);

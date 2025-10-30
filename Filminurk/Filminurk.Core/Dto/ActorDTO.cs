@@ -21,5 +21,9 @@ namespace Filminurk.Core.Dto
         public decimal ActorRating { get; set; }
         public string MovieKnownFor { get; set; }
         public Genders Gender { get; set; }
+
+        /* andmebaasi jaoks vajalikud andmetüübid */
+        public DateTime EntryCreatedAt { get; set; }
+        public DateTime EntryModifiedAt { get; set; }
     }
 }

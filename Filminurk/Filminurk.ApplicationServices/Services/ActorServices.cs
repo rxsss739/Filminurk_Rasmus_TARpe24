@@ -32,6 +32,8 @@ namespace Filminurk.ApplicationServices.Services
             actor.Gender = dto.Gender;
             actor.MovieKnownFor = dto.MovieKnownFor;
             actor.PortraitID = dto.PortraitID;
+            actor.EntryModifiedAt = DateTime.Now;
+            actor.EntryCreatedAt = DateTime.Now;
 
             await _context.Actors.AddAsync(actor);
             await _context.SaveChangesAsync();
