@@ -4,6 +4,7 @@ using Filminurk.Data;
 using Filminurk.Models.Actors;
 using Filminurk.Models.UserComments;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Filminurk.Controllers
 {
@@ -71,7 +72,7 @@ namespace Filminurk.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id) 
         {
-            var actor = await _context.Actors.FindAsync(id);
+            var actor = await _context.Actors.FirstOrDefaultAsync(x => x.ActorID == id);
 
             var vm = new ActorsDeleteViewModel();
             vm.ActorID = actor.ActorID;
@@ -85,6 +86,14 @@ namespace Filminurk.Controllers
             vm.ActorRating = actor.ActorRating;
 
             return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmDelete(Guid id)
+        {
+            var actor = await _actorServices.Delete(id);
+            if (actor == null) { return NotFound(); }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
