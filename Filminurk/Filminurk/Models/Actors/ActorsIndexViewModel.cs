@@ -15,6 +15,6 @@ namespace Filminurk.Models.Actors
         /* 3 enda mõeldud andmetüüpi */
         public decimal ActorRating { get; set; }
         public string MovieKnownFor { get; set; }
-        public Gender Gender { get; set; }
+        public Genders Gender { get; set; }
     }
 }
