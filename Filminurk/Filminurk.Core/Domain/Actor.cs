@@ -16,5 +16,9 @@ namespace Filminurk.Core.Domain
         public string NickName { get; set; }
         public List<string> MoviesActedFor { get; set; }
         public Guid PortraitID { get; set; }
+        /* 3 enda mõeldud andmetüüpi */
+        public decimal ActorRating { get; set; }
+        public string MovieKnownFor { get; set; }
+        public Gender Gender { get; set; }
     }
 }
