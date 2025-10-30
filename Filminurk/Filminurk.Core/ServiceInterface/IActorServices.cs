@@ -11,5 +11,6 @@ namespace Filminurk.Core.ServiceInterface
     public interface IActorServices
     {
         Task<Actor> Create(ActorDTO actor);
+        Task<Actor> Delete(Guid id);
     }
 }

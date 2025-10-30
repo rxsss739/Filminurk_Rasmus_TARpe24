@@ -7,6 +7,7 @@ using Filminurk.Core.Domain;
 using Filminurk.Core.Dto;
 using Filminurk.Core.ServiceInterface;
 using Filminurk.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Filminurk.ApplicationServices.Services
 {
@@ -36,6 +37,16 @@ namespace Filminurk.ApplicationServices.Services
             await _context.SaveChangesAsync();
 
             return actor;
+        }
+
+        public async Task<Actor> Delete(Guid id)
+        {
+            var result = await _context.Actors.FirstOrDefaultAsync(x => x.ActorID == id);
+
+            _context.Actors.Remove(result);
+            await _context.SaveChangesAsync();
+
+            return result;
         }
     }
 }

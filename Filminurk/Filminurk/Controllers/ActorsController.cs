@@ -65,5 +65,24 @@ namespace Filminurk.Controllers
             var result = await _actorServices.Create(dto);
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id) 
+        {
+            var actor = await _context.Actors.FindAsync(id);
+
+            var vm = new ActorsDeleteViewModel();
+            vm.ActorID = actor.ActorID;
+            vm.FirstName = actor.FirstName;
+            vm.LastName = actor.LastName;
+            vm.NickName = actor.NickName;
+            vm.MoviesActedFor = actor.MoviesActedFor;
+            vm.PortraitID = actor.PortraitID;
+            vm.Gender = actor.Gender;
+            vm.MovieKnownFor = actor.MovieKnownFor;
+            vm.ActorRating = actor.ActorRating;
+
+            return View(vm);
+        }
     }
 }
