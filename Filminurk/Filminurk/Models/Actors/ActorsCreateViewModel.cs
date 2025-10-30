@@ -5,6 +5,8 @@ namespace Filminurk.Models.Actors
 {
     public class ActorsCreateViewModel
     {
+        [Key]
+        public Guid ActorID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string NickName { get; set; }

@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Filminurk.Core.Domain;
 using Filminurk.Core.Dto;
+using Filminurk.Core.ServiceInterface;
 using Filminurk.Data;
 
 namespace Filminurk.ApplicationServices.Services
 {
-    public class ActorServices
+    public class ActorServices : IActorServices
     {
         FilminurkTARpe24Context _context;
         public ActorServices(FilminurkTARpe24Context context)
@@ -29,6 +30,7 @@ namespace Filminurk.ApplicationServices.Services
             actor.ActorRating = dto.ActorRating;
             actor.Gender = dto.Gender;
             actor.MovieKnownFor = dto.MovieKnownFor;
+            actor.PortraitID = dto.PortraitID;
 
             await _context.Actors.AddAsync(actor);
             await _context.SaveChangesAsync();

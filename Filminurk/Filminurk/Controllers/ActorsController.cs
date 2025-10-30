@@ -1,4 +1,6 @@
-﻿using Filminurk.Data;
+﻿using Filminurk.Core.Dto;
+using Filminurk.Core.ServiceInterface;
+using Filminurk.Data;
 using Filminurk.Models.Actors;
 using Filminurk.Models.UserComments;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +10,12 @@ namespace Filminurk.Controllers
     public class ActorsController : Controller
     {
         private readonly FilminurkTARpe24Context _context;
+        private readonly IActorServices _actorServices;
 
-        public ActorsController(FilminurkTARpe24Context context)
+        public ActorsController(FilminurkTARpe24Context context, IActorServices actorServices)
         {
             _context = context;
+            _actorServices = actorServices;
         }
 
         public IActionResult Index()
@@ -31,6 +35,35 @@ namespace Filminurk.Controllers
                 }
             );
             return View(result);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            ActorsCreateViewModel result = new ActorsCreateViewModel();
+            return View(result);
+        }
+
+        [HttpPost, ActionName("Create")]
+        public async Task<IActionResult> Create(ActorsCreateViewModel vm)
+        {
+            if (!ModelState.IsValid) { return NotFound(); }
+
+            var dto = new ActorDTO()
+            {
+                ActorID = vm.ActorID,
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                NickName = vm.NickName,
+                MovieKnownFor = vm.MovieKnownFor,
+                Gender = vm.Gender,
+                ActorRating = vm.ActorRating,
+                MoviesActedFor = vm.MoviesActedFor,
+                PortraitID = vm.PortraitID,
+            };
+
+            var result = await _actorServices.Create(dto);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
