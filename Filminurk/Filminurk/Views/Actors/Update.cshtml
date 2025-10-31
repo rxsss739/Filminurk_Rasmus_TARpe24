@@ -1,8 +1,9 @@
-﻿@model Filminurk.Models.Actors.ActorsUpdateViewModel
+﻿@using Filminurk.Models.Actors
+@model Filminurk.Models.Actors.ActorsUpdateViewModel
 
 <div>
-	<form method="post" enctype="multipart/form-data">
-		<input asp-for="@Model.ActorID" type="hidden" />
+	<form method="post" enctype="multipart/form-data" asp-action="Update" asp-controller="Actors">
+		<input asp-for="ActorID" type="hidden" />
 
 		<div class="form-group row">
 			<label asp-for="FirstName" class="col-sm-2 col-form-label"></label>
@@ -54,7 +55,7 @@
 		</div>
 
 		<input asp-action="Update" asp-controller="Actors" type="submit" class="btn btn-primary" value="Update" />
-		<a asp-action="Index" asp-controller="Movies" class="btn btn-success">Back</a>
+		<a asp-action="Index" asp-controller="Actors" class="btn btn-success">Back</a>
 
 	</form>
 </div>

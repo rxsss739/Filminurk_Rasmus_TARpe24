@@ -3,6 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Filminurk.Models.Actors
 {
+    public enum Genders
+    {
+        Male,
+        Female
+    }
+
     public class ActorsUpdateViewModel
     {
         [Key]
@@ -16,5 +22,8 @@ namespace Filminurk.Models.Actors
         public decimal ActorRating { get; set; }
         public string MovieKnownFor { get; set; }
         public Genders Gender { get; set; }
+
+        public DateTime EntryCreatedAt { get; set; }
+        public DateTime EntryModifiedAt { get; set; }
     }
 }

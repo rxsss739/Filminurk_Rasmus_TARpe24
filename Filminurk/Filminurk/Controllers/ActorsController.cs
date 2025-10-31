@@ -32,7 +32,7 @@ namespace Filminurk.Controllers
                     PortraitID = a.PortraitID,
                     ActorRating = a.ActorRating,
                     MovieKnownFor = a.MovieKnownFor,
-                    Gender = a.Gender
+                    Gender = (Genders)a.Gender
                 }
             );
             return View(result);
@@ -57,7 +57,7 @@ namespace Filminurk.Controllers
                 LastName = vm.LastName,
                 NickName = vm.NickName,
                 MovieKnownFor = vm.MovieKnownFor,
-                Gender = vm.Gender,
+                Gender = (Core.Domain.Genders)vm.Gender,
                 ActorRating = vm.ActorRating,
                 MoviesActedFor = vm.MoviesActedFor,
                 PortraitID = vm.PortraitID,
@@ -81,7 +81,7 @@ namespace Filminurk.Controllers
             vm.NickName = actor.NickName;
             vm.MoviesActedFor = actor.MoviesActedFor;
             vm.PortraitID = actor.PortraitID;
-            vm.Gender = actor.Gender;
+            vm.Gender = (Genders)actor.Gender;
             vm.MovieKnownFor = actor.MovieKnownFor;
             vm.ActorRating = actor.ActorRating;
 
@@ -108,11 +108,56 @@ namespace Filminurk.Controllers
             vm.NickName = actor.NickName;
             vm.MoviesActedFor = actor.MoviesActedFor;
             vm.PortraitID = actor.PortraitID;
-            vm.Gender = actor.Gender;
+            vm.Gender = (Genders)actor.Gender;
             vm.ActorRating = actor.ActorRating;
             vm.MovieKnownFor = actor.MovieKnownFor;
 
             return View(vm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid id)
+        {
+            var actor = await _context.Actors.FirstOrDefaultAsync(x => x.ActorID == id);
+
+            var vm = new ActorsUpdateViewModel();
+            vm.ActorID = actor.ActorID;
+            vm.FirstName = actor.FirstName;
+            vm.LastName = actor.LastName;
+            vm.NickName = actor.NickName;
+            vm.MoviesActedFor = actor.MoviesActedFor;
+            vm.PortraitID = actor.PortraitID;
+            vm.Gender = (Genders)actor.Gender;
+            vm.ActorRating = actor.ActorRating;
+            vm.MovieKnownFor = actor.MovieKnownFor;
+            vm.EntryCreatedAt = actor.EntryCreatedAt;
+            vm.EntryModifiedAt = actor.EntryModifiedAt;
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(ActorsUpdateViewModel vm)
+        {
+            if (!ModelState.IsValid) { return NotFound(); }
+
+            var dto = new ActorDTO()
+            {
+                ActorID = vm.ActorID,
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                NickName = vm.NickName,
+                MovieKnownFor = vm.MovieKnownFor,
+                Gender = (Core.Domain.Genders)vm.Gender,
+                ActorRating = vm.ActorRating,
+                MoviesActedFor = vm.MoviesActedFor,
+                PortraitID = vm.PortraitID,
+                EntryCreatedAt = vm.EntryCreatedAt,
+                EntryModifiedAt = DateTime.Now,
+            };
+
+            var result = await _actorServices.Update(dto);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
