@@ -5,7 +5,7 @@
 namespace Filminurk.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class actors2 : Migration
+    public partial class usercomments1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

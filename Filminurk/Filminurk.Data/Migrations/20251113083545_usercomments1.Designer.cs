@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Filminurk.Data.Migrations
 {
     [DbContext(typeof(FilminurkTARpe24Context))]
-    [Migration("20251030084510_actors4")]
-    partial class actors4
+    [Migration("20251113083545_usercomments1")]
+    partial class usercomments1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -162,10 +162,10 @@ namespace Filminurk.Data.Migrations
                     b.Property<string>("CommenterUserID")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IsHarmful")
+                    b.Property<int?>("IsHarmful")
                         .HasColumnType("int");
 
-                    b.Property<int>("IsHelpful")
+                    b.Property<int?>("IsHelpful")
                         .HasColumnType("int");
 
                     b.HasKey("CommentID");

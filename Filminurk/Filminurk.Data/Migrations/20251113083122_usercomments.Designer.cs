@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Filminurk.Data.Migrations
 {
     [DbContext(typeof(FilminurkTARpe24Context))]
-    [Migration("20251024082241_images")]
-    partial class images
+    [Migration("20251113083122_usercomments")]
+    partial class usercomments
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,51 @@ namespace Filminurk.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Filminurk.Core.Domain.Actor", b =>
+                {
+                    b.Property<Guid>("ActorID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("ActorRating")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("EntryCreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EntryModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MovieKnownFor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MoviesActedFor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NickName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("PortraitID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ActorID");
+
+                    b.ToTable("Actors");
+                });
 
             modelBuilder.Entity("Filminurk.Core.Domain.FileToApi", b =>
                 {
@@ -90,6 +135,42 @@ namespace Filminurk.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Movies");
+                });
+
+            modelBuilder.Entity("Filminurk.Core.Domain.UserComment", b =>
+                {
+                    b.Property<Guid>("CommentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CommentBody")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CommentCreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CommentDeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CommentModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CommentedScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CommenterUserID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IsHarmful")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IsHelpful")
+                        .HasColumnType("int");
+
+                    b.HasKey("CommentID");
+
+                    b.ToTable("UserComments");
                 });
 #pragma warning restore 612, 618
         }

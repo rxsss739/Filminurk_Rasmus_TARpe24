@@ -159,10 +159,10 @@ namespace Filminurk.Data.Migrations
                     b.Property<string>("CommenterUserID")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IsHarmful")
+                    b.Property<int?>("IsHarmful")
                         .HasColumnType("int");
 
-                    b.Property<int>("IsHelpful")
+                    b.Property<int?>("IsHelpful")
                         .HasColumnType("int");
 
                     b.HasKey("CommentID");

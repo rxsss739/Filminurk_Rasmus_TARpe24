@@ -1,4 +1,7 @@
-﻿using Filminurk.Data;
+﻿using Filminurk.ApplicationServices.Services;
+using Filminurk.Core.Dto;
+using Filminurk.Core.ServiceInterface;
+using Filminurk.Data;
 using Filminurk.Models.UserComments;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,10 +10,14 @@ namespace Filminurk.Controllers
     public class UserCommentsController : Controller
     {
         private readonly FilminurkTARpe24Context _context;
+        private readonly IUserCommentsServices _userCommentsServices;
 
-        public UserCommentsController(FilminurkTARpe24Context context)
+        public UserCommentsController(FilminurkTARpe24Context context,
+            IUserCommentsServices userCommentsServices
+            )
         {
             _context = context;
+            _userCommentsServices = userCommentsServices;
         }
 
         public IActionResult Index()
@@ -20,11 +27,41 @@ namespace Filminurk.Controllers
                 {
                     CommentID = c.CommentID,
                     CommentBody = c.CommentBody,
-                    IsHarmful = c.IsHarmful,
+                    IsHarmful = (int)c.IsHarmful,
                     CommentCreatedAt = c.CommentCreatedAt
                 }
             );
             return View(result);
+        }
+
+        [HttpGet]
+        public IActionResult NewComment()
+        {
+            //todo: erista kas tegemist on admini, või tavakasutajaga
+            UserCommentsCreateViewModel newcomment = new();
+            return View(newcomment);
+        }
+
+        [HttpPost, ActionName("NewComment")]
+        public async Task<IActionResult> NewCommentPost(UserCommentsCreateViewModel newcommentVM)
+        {
+            newcommentVM.CommenterUserID = "00000000-0000-0000-000000000000";
+            //todo: newcommenti manuaalne seadmine, asenda pärast kasutaja id-ga
+            var dto = new UserCommentDTO() { };
+            dto.CommentID = newcommentVM.CommentID;
+            dto.CommentBody = newcommentVM.CommentBody;
+            dto.CommenterUserID = newcommentVM.CommenterUserID;
+            dto.CommentCreatedAt = newcommentVM.CommentCreatedAt;
+            dto.CommentModifiedAt = newcommentVM.CommentModifiedAt;
+            dto.IsHelpful = newcommentVM.IsHelpful;
+            dto.IsHarmful = newcommentVM.IsHarmful;
+
+            var result = await _userCommentsServices.NewComment(dto);
+            if (result == null) { return NotFound(); }
+            // todo: erista ära kas tegu on admini või kasutajaga, admin tagastub
+            // admin-comments-index, kasutaja aga vastava filmi juurde
+            return RedirectToAction(nameof(Index));
+            // return RedirectToAction("Details", "Movies", id)
         }
     }
 }
