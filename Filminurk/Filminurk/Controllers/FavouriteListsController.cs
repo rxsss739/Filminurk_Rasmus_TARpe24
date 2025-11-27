@@ -1,6 +1,7 @@
 ﻿using Filminurk.ApplicationServices.Services;
 using Filminurk.Core.Domain;
 using Filminurk.Core.Dto;
+using Filminurk.Core.ServiceInterface;
 using Filminurk.Data;
 using Filminurk.Models.FavouriteLists;
 using Filminurk.Models.Movies;
@@ -11,10 +12,10 @@ namespace Filminurk.Controllers
     public class FavouriteListsController : Controller
     {
         private readonly FilminurkTARpe24Context _context;
-        private readonly FavouriteListsServices _favouriteListsServices;
+        private readonly IFavouriteListsServices _favouriteListsServices;
         //fileservice add later
 
-        public FavouriteListsController(FilminurkTARpe24Context context, FavouriteListsServices favouriteListsServices)
+        public FavouriteListsController(FilminurkTARpe24Context context, IFavouriteListsServices favouriteListsServices)
         {
             _context = context;
             _favouriteListsServices = favouriteListsServices;
@@ -87,19 +88,69 @@ namespace Filminurk.Controllers
             newListDto.IsPrivate = vm.IsPrivate;
             newListDto.ListCreatedAt = DateTime.UtcNow;
             newListDto.ListModifiedAt = DateTime.UtcNow;
-            newListDto.ListDeletedAt = (DateTime)vm.ListDeletedAt;
+            newListDto.ListDeletedAt = vm.ListDeletedAt;
             newListDto.ListBelongsToUser = "00000000-0000-0000-0000-000000000001";
-            List<Guid> convertedIDs = new List<Guid>();
-            if (newListDto.ListOfMovies != null)
+
+            var listofmoviestoadd = new List<Movie>();
+            foreach (var movieId in tempParse)
             {
-                convertedIDs = MovieToId(newListDto.ListOfMovies);
+                Movie thismovie = (Movie)_context.Movies.Where(tm => tm.ID == movieId).ToArray().Take(1);
+                listofmoviestoadd.Add(thismovie);
             }
-            var newList = await _favouriteListsServices.Create(newListDto, convertedIDs);
-            if (newList != null)
+
+            //List<Guid> convertedIDs = new List<Guid>();
+            //if (newListDto.ListOfMovies != null)
+            //{
+            //    convertedIDs = MovieToId(newListDto.ListOfMovies);
+            //}
+            var newList = await _favouriteListsServices.Create(newListDto/*, convertedIDs*/);
+            if (newList == null)
             {
                 return BadRequest();
             }
             return RedirectToAction("Index", vm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UserDetails(Guid id, Guid thisuserid)
+        {
+            if (id == null || thisuserid == null)
+            {
+                return BadRequest();
+            }
+            var thisList = _context.FavouriteLists
+                .Where(tl => tl.FavouriteListID == id && tl.ListBelongsToUser == thisuserid.ToString())
+                .Select
+                (
+                stl => new FavouriteListUserDetailsViewModel
+                {
+                    FavouriteListID = stl.FavouriteListID,
+                    ListBelongsToUser = stl.ListBelongsToUser,
+                    IsMovieOrActor = stl.IsMovieOrActor,
+                    ListName = stl.ListName,
+                    ListDescription = stl.ListDescription,
+                    IsPrivate = stl.IsPrivate,
+                    ListOfMovies = stl.ListOfMovies,
+                    IsReported = stl.IsReported,
+                    Image = _context.FilesToDatabase
+                        .Where(i => i.ListID == stl.FavouriteListID)
+                        .Select(si => new FavouriteListIndexImageViewModel
+                        {
+                            ImageID = si.ImageID,
+                            ListID = si.ListID,
+                            ImageData = si.ImageData,
+                            ImageTitle = si.ImageTitle,
+                            Image = string.Format("data:image/gif;base64,{0}", Convert.ToBase64String(si.ImageData))
+                        }).ToList()
+                });
+            //add vd atr here later, for comparing user&admin
+
+            if (thisList == null)
+            {
+                return NotFound();
+            }
+
+            return View("Details", thisList.First());
         }
 
         private List<Guid> MovieToId(List<Movie> listOfMovies)

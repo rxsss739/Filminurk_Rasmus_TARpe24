@@ -8,7 +8,7 @@
 }
 
 <div>
-	<a asp-action="CreateList" asp-controller="FavouriteLists" class="btn btn-primary">Tee uus lemmikute nimekiri</a>
+	<a asp-action="Create" asp-controller="FavouriteLists" class="btn btn-primary">Tee uus lemmikute nimekiri</a>
 	<a asp-action="Index" asp-controller="Home" class="btn btn-primary">Pealeht</a>
 </div>
 <div> @*no class currently, no design specified*@
@@ -37,7 +37,7 @@
 				{
 					<table>
 						<tr>
-							<td colspan="2">Sorry, no list</td>
+							<td colspan="2">Nimekirju pole</td>
 						</tr>
 						<tr>
 							<td><img width="128" src="~/defaultAssets/image/noposter.png"/></td>
@@ -51,7 +51,7 @@
 						<table>
 							<tr>
 								<td colspan="2">
-									<a asp-action="ListDetailsListOwner" asp-controller="FavouriteLists" asp-route-id="@list.FavouriteListID">@list.ListName</a>
+									<a asp-action="UserDetails" asp-controller="FavouriteLists" asp-route-id="@list.FavouriteListID" asp-route-thisuserid="@list.ListBelongsToUser">@list.ListName</a>
 								</td>
 							</tr>
 							<tr>
