@@ -25,6 +25,7 @@ namespace Filminurk.ApplicationServices.Services
         public async Task<FavouriteList> DetailsAsync(Guid id)
         {
             var result = await _context.FavouriteLists
+                .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.FavouriteListID == id);
             return result;
         }
@@ -47,6 +48,29 @@ namespace Filminurk.ApplicationServices.Services
             //    _context.FavouriteLists.Entry
             //}
             return newList;
+        }
+
+        public async Task<FavouriteList> Update(FavouriteList updatedList)
+        {
+            FavouriteList modifiedList = new();
+
+            modifiedList.FavouriteListID = updatedList.FavouriteListID;
+            modifiedList.ListBelongsToUser = updatedList.ListBelongsToUser;
+            modifiedList.IsMovieOrActor = updatedList.IsMovieOrActor;
+            modifiedList.ListName = updatedList.ListName;
+            modifiedList.ListDescription= updatedList.ListDescription;
+            modifiedList.IsPrivate = updatedList.IsPrivate;
+            modifiedList.ListOfMovies= updatedList.ListOfMovies;
+            modifiedList.ListOfActors= updatedList.ListOfActors;
+            modifiedList.ListCreatedAt = updatedList.ListCreatedAt;
+            modifiedList.ListModifiedAt = updatedList.ListModifiedAt;
+            modifiedList.ListDeletedAt = updatedList.ListDeletedAt;
+            modifiedList.IsReported = updatedList.IsReported;
+
+            _context.FavouriteLists.Update(modifiedList);
+            await _context.SaveChangesAsync();
+
+            return modifiedList;
         }
     }
 }

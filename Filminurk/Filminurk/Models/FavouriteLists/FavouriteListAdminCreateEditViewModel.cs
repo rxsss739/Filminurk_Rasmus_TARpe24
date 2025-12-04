@@ -2,9 +2,9 @@
 
 namespace Filminurk.Models.FavouriteLists
 {
-    public class FavouriteListUserDetailsViewModel
+    public class FavouriteListAdminCreateEditViewModel
     {
-        public Guid FavouriteListID { get; set; }
+        public Guid? FavouriteListID { get; set; }
         public string ListBelongsToUser { get; set; }
         public bool IsMovieOrActor { get; set; } // false = movie, true = actor
         public string ListName { get; set; }
@@ -16,11 +16,6 @@ namespace Filminurk.Models.FavouriteLists
         public DateTime? ListModifiedAt { get; set; }
         public DateTime? ListDeletedAt { get; set; }
         public bool? IsReported { get; set; } = false;
-
-        public static explicit operator FavouriteListUserDetailsViewModel(FavouriteList v)
-        {
-            throw new NotImplementedException();
-        }
-        //public List<FavouriteListIndexImageViewModel> Image { get; set; } = new List<FavouriteListIndexImageViewModel>(); // imagemodel
+        public List<FavouriteListIndexImageViewModel> Image { get; set; } = new List<FavouriteListIndexImageViewModel>(); // imagemodel for index
     }
 }

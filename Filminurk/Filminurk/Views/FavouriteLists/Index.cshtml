@@ -15,7 +15,7 @@
 	<form method="post">
 		<table class="table">
 			<thead>
-				@if (!Model.Any())
+				@if (!Model.Any(l => l.ListDeletedAt == null))
 				{
 					<tr>
 						<th scope="col" colspan="2">
@@ -48,22 +48,26 @@
 				{
 					@foreach (var list in Model)
 					{
-						<table>
-							<tr>
-								<td colspan="2">
-									<a asp-action="UserDetails" asp-controller="FavouriteLists" asp-route-id="@list.FavouriteListID" asp-route-thisuserid="@list.ListBelongsToUser">@list.ListName</a>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									@foreach(var image in list.Image)
-									{
-										<partial name="_ImageIndex" model="image" />
-									}
-								</td>
-								<td>@list.ListDescription</td>
-							</tr>
-						</table>
+						@if (list.ListDeletedAt == null)
+						{
+							<table>
+								<tr>
+									<td colspan="2">
+										<a asp-action="UserDetails" asp-controller="FavouriteLists" asp-route-id="@list.FavouriteListID" asp-route-thisuserid="@list.ListBelongsToUser">@list.ListName</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										@foreach (var image in list.Image)
+										{
+											<partial name="_ImageIndex" model="image" />
+										}
+									</td>
+									<td>@list.ListDescription</td>
+								</tr>
+							</table>
+							<br />
+						}
 					}
 					rowNumber++;
 				}

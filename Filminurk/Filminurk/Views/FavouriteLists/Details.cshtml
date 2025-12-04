@@ -7,15 +7,22 @@
 <div>
 	@if (Model.IsReported == true)
 	{
-		@:Sinu nimekiri rikub kogukonna reeglei <br> 
+		@:Sinu nimekiri rikub kogukonna reegleid <br> 
 		@:Oleme seadnud nimekirja privaatseks kuni admin selle üle vaatab
 	}
 	<table>
-		<tr>@Model.ListName</tr>
-		<tr>Image here@* <partial name="_ImageIndex" model="@Model.Image" ></partial>*@</tr>
+		<tr><h1>@Model.ListName</h1></tr><br />
+		@if (Model.ListDeletedAt != null)
+		{
+			<tr>This list was deleted at: @Model.ListDeletedAt</tr>
+			<br />
+		}
+		<tr>Image here@* <partial name="_ImageIndex" model="@Model.Image" ></partial>*@</tr><br />
+		<tr>Is list private: @Model.IsPrivate</tr>
 	</table>
 </div>
 <div>
+	<form method="post">
 	<table class="table">
 		@foreach (var movie in Model.ListOfMovies)
 		{
@@ -46,4 +53,5 @@
 		<input asp-action="UserEditList" asp-controller="FavouriteLists" asp-route-id="@Model.FavouriteListID" type="submit" class="btn btn-success" value="Muuda nimekirja sisu ja andmeid"/>
 		<a asp-action="Index" asp-controller="FavouriteLists" class="btn btn-light">Tagasi</a>
 	</div>
+	</form>
 </div>

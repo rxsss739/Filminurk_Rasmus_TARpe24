@@ -1,6 +1,6 @@
 ﻿@model Filminurk.Models.FavouriteLists.FavouriteListsUserCreateViewModel
 @{
-	var allMoviesTickboxes = ViewBag.allMovies as List<Filminurk.Models.Movies.MoviesIndexViewModel>;
+	List<Filminurk.Models.Movies.MoviesIndexViewModel> allMoviesTickboxes = ViewBag.allMovies as List<Filminurk.Models.Movies.MoviesIndexViewModel>;
 	List<string> userHasSelected = ViewBag.userHasSelected;
 	List<string> previouslySelected = userHasSelected;
 }
