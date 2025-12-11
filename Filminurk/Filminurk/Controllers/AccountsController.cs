@@ -280,7 +280,7 @@ namespace Filminurk.Controllers
                 {
                     return View("AccountLocked");
                 }
-                ModelState.AddModelError("", "Sisselogimine ebaõnnestus, kontakteeru administraatoriga")
+                ModelState.AddModelError("", "Sisselogimine ebaõnnestus, kontakteeru administraatoriga");
             }
 
             return View(model);
