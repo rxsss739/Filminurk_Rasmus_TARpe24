@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Filminurk.Core.Domain;
-using Filminurk.Core.Dto;
+using Filminurk.Core.Dto.AccountsDTOs;
 using Filminurk.Core.ServiceInterface;
 using Microsoft.AspNetCore.Identity;
 
@@ -32,7 +32,7 @@ namespace Filminurk.ApplicationServices.Services
         {
             var user = new ApplicationUser
             {
-                UserName = userDTO.UserName,
+                UserName = userDTO.Email,
                 Email = userDTO.Email,
                 ProfileType = userDTO.ProfileType,
                 DisplayName = userDTO.DisplayName,

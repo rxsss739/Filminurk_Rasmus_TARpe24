@@ -17,7 +17,7 @@ namespace Filminurk.Models.Accounts
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
 
-        public string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
         public bool ProfileType { get; set; } = false;
     }
 }

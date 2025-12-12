@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Filminurk.Core.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Filminurk.Models.Accounts;
+using Filminurk.Core.Dto;
 
 namespace Filminurk.Controllers
 {
@@ -19,12 +20,14 @@ namespace Filminurk.Controllers
             (
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            FilminurkTARpe24Context context
+            FilminurkTARpe24Context context,
+            IEmailsServices emailsServices
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _emailsServices = emailsServices;
         }
 
         [HttpGet]
@@ -193,9 +196,11 @@ namespace Filminurk.Controllers
             {
                 var user = new ApplicationUser()
                 {
-                    UserName = model.DisplayName,
+                    UserName = model.Email,
                     Email = model.Email,
                     ProfileType = model.ProfileType,
+                    DisplayName = model.DisplayName,
+                    AvatarImageID = Guid.NewGuid().ToString(),
                 };
                 var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -204,8 +209,16 @@ namespace Filminurk.Controllers
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                     var confirmationLink = Url.Action("ConfirmEmail", "Accounts", new {userID = user.Id, token=token}, Request.Scheme);
-                    //homework task: koosta email kasutajalt kasutajalt pärineva aadressile saatmiseks, kasutaja saab oma postkastist kätte emaili, kinnituslingiga
-                    // mille jaoks kasutatakse tokenit, siin tuleb välja kutsuda vastav, uus, emaili saatmise meetod, mis saadab õige sisuga kirja
+
+                    var dto = new EmailDTO()
+                    {
+                        SendTo = user.Email,
+                        EmailSubject = "Emaili kinnitamine sinu kasutajale",
+                        EmailContent = $"Sinu kinnitus link: <a href='{confirmationLink}' style='border: 1px solid orange; background-color: orange; text-decoration: none; color:white;'>Vajuta</a>"
+                    };
+                    _emailsServices.SendEmail(dto);
+
+                    return View("ConfirmEmail", new ConfirmEmailViewModel() { Email = user.Email });
                 }
 
                 //
@@ -274,6 +287,11 @@ namespace Filminurk.Controllers
                     {
                         return RedirectToAction("Index", "Home");
                     }
+                }
+
+                bool validPassword = await _userManager.CheckPasswordAsync(user, model.Password);
+                {
+                    ModelState.AddModelError("", "Sisselogimine ebaõnnestus, vale parool");
                 }
 
                 if (result.IsLockedOut)
